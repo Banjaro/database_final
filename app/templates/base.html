@@ -1,14 +1,42 @@
-<html>
-  <head>
-	{% if title %}
-    <title>{{ title }} - Team Corporate Sellout</title>
-	{% else %}
-		<title>Team Corporate Sellout</title>
-	{% endif %}
-  </head>
-  <body>
-		<div>TCS: <a href="/index">Home</a></div>
-		<hr>
-      {% block content %}{% endblock %}
-  </body>
-</html>
+{% extends 'bootstrap/base.html' %}
+
+{% block title %}
+	{% if title %}{{title}} - Team Corporate Sellout{%else%}Welcome to TCS{%endif%}
+{% endblock %}
+
+{% block navbar %}
+	<nav class="navbar navbar-default">
+		<div class="container">
+				<div class="navbar-header">
+					<a class="navbar-brand" href="{{ url_for('index') }}">The Business Machine</a>
+			</div>
+			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+				<ul class="nav navbar-nav">
+						<li><a href="{{ url_for('index') }}">Home</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+						{% if current_user.is_anonymous %}
+						<li><a href="{{ url_for('login') }}">Login</a></li>
+						{% else %}
+						<li><a href="{{ url_for('logout') }}">Logout</a></li>
+						{% endif %}
+				</ul>
+			</div>
+		</div>
+	</nav>
+{%endblock%}
+
+
+{% block content %}
+    <div class="container">
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-info" role="alert">{{ message }}</div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+
+        {% block app_content %}{% endblock %}
+    </div>
+{% endblock %}
