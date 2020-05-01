@@ -1,3 +1,4 @@
+import sqlalchemy
 from flask import Flask
 from config import Config
 from flask_sqlalchemy import SQLAlchemy
@@ -12,5 +13,17 @@ migrate = Migrate(app, db)
 login = LoginManager(app)
 login.login_view = 'login'
 bootstrap = Bootstrap(app)
+
+try:
+    db.create_all()
+except:
+    engine = sqlalchemy.create_engine(
+        'mysql+pymysql://{}:{}@localhost'.format(
+            Config.db_user, Config.db_password
+        ))
+    engine.execute('CREATE DATABASE {}'.format(Config.db_name))
+    engine.execute('use {}'.format(Config.db_name))
+
+
 
 from app import routes, models

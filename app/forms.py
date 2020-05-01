@@ -28,3 +28,9 @@ class RegistrationForm(FlaskForm):
         email = User.query.filter_by(email=email.data).first()
         if email is not None:
             raise ValidationError('This email address is already in use.')
+
+
+class EditProfileForm(FlaskForm):
+    username = StringField('Username')
+    password = StringField('New Password')
+    submit = SubmitField('Save Changes')
