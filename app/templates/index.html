@@ -1,10 +1,21 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
 
 {% block app_content %}
+	{% if current_user.is_validated %}
 	<h1>Hi, {{current_user.username}}!</h1>
-
+	<hr>
+	{% endif %}
+	{% if form %}
+	<div class="row">
+		<div class="col-md-4">
+		{{wtf.quick_form(form)}}
+		</div>
+	</div>
+	{%endif%}
+	<table>
 	{% for post in posts%}
-		<div>{{ post.author.username }} says: {{post.body }}</div>
+			{% include "_posts.html" %}
 	{% endfor%}
-
+	</table>
 {% endblock %}

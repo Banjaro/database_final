@@ -1,7 +1,7 @@
 {% extends 'bootstrap/base.html' %}
 
 {% block title %}
-	{% if title %}{{title}} - Team Corporate Sellout{%else%}Welcome to TCS{%endif%}
+	{% if title %}{{title}} - Team Corporate Sellout{%else%}Welcome to TBM{%endif%}
 {% endblock %}
 
 {% block navbar %}
@@ -12,7 +12,8 @@
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-						<li><a href="{{ url_for('index') }}">Home</a></li>
+						<li><a href="{{ url_for('index') }}">My Home</a></li>
+						<li><a href="{{ url_for('explore') }}">Explore</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 						{% if current_user.is_anonymous %}

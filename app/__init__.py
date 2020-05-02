@@ -19,11 +19,9 @@ try:
 except:
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://{}:{}@localhost'.format(
-            Config.db_user, Config.db_password
-        ))
+            Config.db_username, Config.db_password))
     engine.execute('CREATE DATABASE {}'.format(Config.db_name))
     engine.execute('use {}'.format(Config.db_name))
-
-
+    db.create_all()
 
 from app import routes, models

@@ -1,5 +1,5 @@
-<table>
-	<tr valign="top">
-		<td>{{ post.author.username }} says: <b>{{ post.body }}</td>
-	</tr>
-</table>
+<tr>
+<td><a href="{{ url_for('user', username=post.author.username) }}">
+{{ post.author.username }} </a></td>
+<td>says: <b>{{ post.body }}</td>
+</tr>
