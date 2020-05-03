@@ -1,4 +1,4 @@
-from app.models import User
+from app.models import Employee
 from flask_wtf import FlaskForm
 from wtforms import StringField, \
     PasswordField, BooleanField, SubmitField, TextAreaField
@@ -6,35 +6,43 @@ from wtforms.validators import DataRequired,\
      EqualTo, Email, ValidationError, Length
 
 
-class LoginForm(FlaskForm):
+class EmployeeLoginForm(FlaskForm):
     username = StringField('Username', validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
-    employee = BooleanField('Company owner?')
     submit = SubmitField('Sign In')
 
 
-class RegistrationForm(FlaskForm):
+class CompanyLoginForm(FlaskForm):
+    company_id = StringField('Username', validators=[DataRequired()])
+    password = PasswordField('Password', validators=[DataRequired()])
+    submit = SubmitField('Sign In')
+
+
+class EmployeeRegistrationForm(FlaskForm):
+    name = StringField('Your Name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
-    email = StringField('Email', validators=[DataRequired(), Email()])
+    company = StringField(
+        'Employer Company ID',
+        validators=[DataRequired()])
     password = PasswordField('Password', validators=[DataRequired()])
     passwordcheck = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
     submit = SubmitField('Register')
 
     def validate_username(self, username):
-        user = User.query.filter_by(username=username.data).first()
+        user = Employee.query.filter_by(username=username.data).first()
         if user is not None:
             raise ValidationError('Please pick a different username.')
 
     def validate_email(self, email):
-        email = User.query.filter_by(email=email.data).first()
+        email = Employee.query.filter_by(email=email.data).first()
         if email is not None:
             raise ValidationError('This email address is already in use.')
 
 
-class EditProfileForm(FlaskForm):
-    username = StringField('Username')
-    password = StringField('New Password')
+class EditEmployeeForm(FlaskForm):
+    username = StringField('New Username')
+    password = PasswordField('New Password', validators=[Length(min=1)])
     submit = SubmitField('Save Changes')
 
 

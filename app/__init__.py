@@ -5,6 +5,7 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap
+from sqlalchemy.exc import ProgrammingError
 
 app = Flask(__name__)
 app.config.from_object(Config)
@@ -14,14 +15,14 @@ login = LoginManager(app)
 login.login_view = 'login'
 bootstrap = Bootstrap(app)
 
+from app import routes, models
+
 try:
-    db.create_all()
-except:
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://{}:{}@localhost'.format(
             Config.db_username, Config.db_password))
     engine.execute('CREATE DATABASE {}'.format(Config.db_name))
     engine.execute('use {}'.format(Config.db_name))
     db.create_all()
-
-from app import routes, models
+except ProgrammingError:
+    db.create_all()

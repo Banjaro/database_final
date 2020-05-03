@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+	{% if current_user.is_authenticated %}
+	<h1>Hi, {{current_user.name}}!</h1>
+	<hr>
+	{% endif %}
+
+{% endblock %}
