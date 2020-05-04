@@ -1,3 +1,7 @@
+# Team corporate sellout
+# These are all of the views for the application
+
+
 from app import app, db
 from app.forms import EmployeeLoginForm,\
     EmployeeRegistrationForm, EditEmployeeForm, AddHourForm,\
@@ -112,7 +116,8 @@ def employee(username):
 @app.route('/add_product_to/<username>', methods=['GET', 'POST'])
 @login_required
 def add_product_to(username):
-    form = ProductEmpForm()
+    query = Product.query.all()
+    form = ProductEmpForm(query)
     if form.validate_on_submit():
         product = Product.query.filter_by(name=form.name.data).first()
         current_user.add_product(product)

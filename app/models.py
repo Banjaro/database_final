@@ -1,3 +1,8 @@
+# This is used to set up the database schema using sqlalchemy
+# We have 3 models here: employee, company, and product
+# Companys employ employees and produce products
+# Employees work on products
+
 from app import db, login
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
@@ -46,7 +51,6 @@ class Employee(UserMixin, db.Model):
     # Password will be stored as a hash
     password_hash = db.Column(db.String(128))
     current_hours = db.Column(db.Integer, default=0)
-    # This can be a dropdown and replace the internal external project dev sections
     job_title = db.Column(db.String(64))
     hourly_wage = db.Column(db.Integer)
     employer_id = db.Column(db.Integer, db.ForeignKey('company.id'))
@@ -94,7 +98,7 @@ class Employee(UserMixin, db.Model):
         return '<Employee {}>'.format(self.name)
 
 
-# Used to load users
+# Used to load employee users
 @login.user_loader
 def load_user(id):
     return Employee.query.get(int(id))

@@ -1,3 +1,6 @@
+# These are all of the forms that are used for various things
+#  around the website
+
 from app.models import Employee, Company, Product
 from flask_wtf import FlaskForm
 from wtforms import StringField, \
@@ -20,6 +23,7 @@ jobtypes = [
 ]
 
 
+# Form to register new employee
 class EmployeeRegistrationForm(FlaskForm):
     name = StringField('Your Name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
@@ -47,17 +51,21 @@ class EmployeeRegistrationForm(FlaskForm):
             raise ValidationError('Please use an existing company ID')
 
 
+# Used to get all the products for the selectField
 query = Product.query.all()
 choices = [("", "")]
 for item in query:
     thing = (item.name, item.name)
     choices.append(thing)
 
+
+# Form to add product to employee
 class ProductEmpForm(FlaskForm):
     name = SelectField("Product", choices=choices)
     submit = SubmitField('Add Product')
 
 
+# New company form
 class CompanyForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
     description = TextAreaField('Description', validators=[DataRequired()])
@@ -69,6 +77,7 @@ class CompanyForm(FlaskForm):
             raise ValidationError('Company name already in use')
 
 
+# New product registration form
 class ProductForm(FlaskForm):
     name = StringField("Name")
     description = TextAreaField("Description")
@@ -81,11 +90,13 @@ class ProductForm(FlaskForm):
             raise ValidationError('Please use an existing company ID')
 
 
+# Form to add hours to employee
 class AddHourForm(FlaskForm):
     hours = IntegerField('Add Hours')
     submit = SubmitField('GO')
 
 
+# Form to edit employee
 class EditEmployeeForm(FlaskForm):
     username = StringField('New Username')
     password = PasswordField('New Password', validators=[Length(min=1)])

@@ -2,3 +2,4 @@
 __pycache__
 migrations
 .mypy_cache
+app/__pycache__
