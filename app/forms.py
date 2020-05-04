@@ -5,7 +5,6 @@ from wtforms import StringField, \
     IntegerField, SelectField
 from wtforms.validators import DataRequired,\
      EqualTo, ValidationError, Length
-from flask_login import current_user
 
 
 class EmployeeLoginForm(FlaskForm):
@@ -49,11 +48,10 @@ class EmployeeRegistrationForm(FlaskForm):
 
 
 query = Product.query.all()
-choices = []
+choices = [("", "")]
 for item in query:
     thing = (item.name, item.name)
     choices.append(thing)
-
 
 class ProductEmpForm(FlaskForm):
     name = SelectField("Product", choices=choices)

@@ -57,9 +57,3 @@ REFERENCES employee(id);
 
 INSERT INTO company(company_name,description) VALUES("Missouri S&T", "Founded in 1870 as one of the first technological institutions west of the Mississippi, we’ve been building on our heritage of discovery, creativity and innovation to equip and inspire today’s students to meet tomorrow’s great global challenges.");
 INSERT INTO company(company_name,description) VALUES("Mc. Donalds", "Burgers, burgers, burgers.");
-
-
-
-
-
-

@@ -15,8 +15,8 @@ login = LoginManager(app)
 login.login_view = 'login'
 bootstrap = Bootstrap(app)
 
-from app import routes, models
 
+from app import models
 try:
     engine = sqlalchemy.create_engine(
         'mysql+pymysql://{}:{}@localhost'.format(
@@ -26,3 +26,5 @@ try:
     db.create_all()
 except ProgrammingError:
     db.create_all()
+
+from app import routes
