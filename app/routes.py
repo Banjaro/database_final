@@ -116,8 +116,7 @@ def employee(username):
 @app.route('/add_product_to/<username>', methods=['GET', 'POST'])
 @login_required
 def add_product_to(username):
-    query = Product.query.all()
-    form = ProductEmpForm(query)
+    form = ProductEmpForm()
     if form.validate_on_submit():
         product = Product.query.filter_by(name=form.name.data).first()
         current_user.add_product(product)

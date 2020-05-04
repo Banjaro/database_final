@@ -12,11 +12,10 @@
 	to delete your account
 	</h3>
 	{%else%}
-	<h1>Hello and welcome the The Business Machine </h1>
+	<h1>Welcome the The Business Machine </h1>
 	<hr>
 	<h3>Team Corporate Sellout's business based answer to your business based problems!</h3>
-	<h3><a href="{{url_for('login')}}">Login</a>
-	 to get started</h3>
+	<h3><a href="{{url_for('login')}}">Login</a></h3>
 	{% endif %}
 	{% for company in companies %}
 		{% include '_company.html' %}
