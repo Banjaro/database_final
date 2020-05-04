@@ -1,10 +1,11 @@
-from app.models import Employee, Company
+from app.models import Employee, Company, Product
 from flask_wtf import FlaskForm
 from wtforms import StringField, \
     PasswordField, BooleanField, SubmitField, TextAreaField,\
     IntegerField, SelectField
 from wtforms.validators import DataRequired,\
-     EqualTo, Email, ValidationError, Length
+     EqualTo, ValidationError, Length
+from flask_login import current_user
 
 
 class EmployeeLoginForm(FlaskForm):
@@ -47,20 +48,34 @@ class EmployeeRegistrationForm(FlaskForm):
             raise ValidationError('Please use an existing company ID')
 
 
+query = Product.query.all()
+choices = []
+for item in query:
+    thing = (item.name, item.name)
+    choices.append(thing)
+
+print(choices)
+
+
+class ProductEmpAddForm(FlaskForm):
+    name = SelectField("Product", choices=choices)
+    submit = SubmitField('Add Product')
+
+
 class CompanyForm(FlaskForm):
     name = StringField('Name', validators=[DataRequired()])
-    description = StringField('Description', validators=[DataRequired()])
+    description = TextAreaField('Description', validators=[DataRequired()])
     submit = SubmitField('Create New Company')
 
-    def validate_company_name(self, company_name):
-        company = Company.query.filter_by(company_name=company_name).first()
+    def validate_name(self, name):
+        company = Company.query.filter_by(company_name=name.data).first()
         if company is not None:
             raise ValidationError('Company name already in use')
 
 
 class ProductForm(FlaskForm):
     name = StringField("Name")
-    description = StringField("Description")
+    description = TextAreaField("Description")
     company = IntegerField("Manufacturer ID")
     submit = SubmitField('Create New Product')
 

@@ -15,6 +15,7 @@
     {% for product in current_user.all_products() %}
         {% include "_products.html" %}
     {% endfor %}
+    <h3><a href="{{url_for('add_product_to',username=current_user.username)}}">Add Product</a></h3>
     <hr>
     <h3>Your Total Hours</h3>
     <h4>{{current_user.current_hours}}</h4>
