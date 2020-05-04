@@ -13,5 +13,5 @@ pip install app
 pip install pymysql
 pip install werkzeug
 pip install cryptography
-clear
+Clear-Host
 Write-Host "Installation Complete"
