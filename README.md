@@ -1,9 +1,8 @@
 # CS 2200 - Databases -  Final project
-# Written By: Patrick Cobb
+# Written By: Patrick Cobb, Ryan Copeland
 
 
-## This application was meant to be ran on a linux machine
-## It was only tested on Ubuntu 16.04 and I cannot gaurantee that it will work for/on any other OS
+## This application has only been tested on Windows 10 and Ubuntu 16.04
 
 
 This application is a sample database program that can be used to track the assets (employees/projects/etc.) of companies
@@ -14,8 +13,14 @@ Before attempting to run the program please follow the steps below:
 
 1. This project requires access to an MYSQL database in order to function. In order to give the program access to your mysql database, go to **config.py** and input your mysql credentials and the name of the database where you would like to store your company information
 
-2. Go to wherever you have this project downloaded and type ./run.py
+2. (Windows) Insure scripting permissions are enabled. (Run cmd as admin, and type the command "Set-ExecutionPolicy Unrestricted")
 
-3. Navigate to your browser of choice and paste **localhost:5000** into the address bar
+3. Go to the filepath of this project and install prerequisites (bash: "chmod u+x LinuxInstall.sh" - Powershell: "./WindowsInstall.ps1")
+
+4. Initialize database
+
+5. Go to the filepath of this project and type ./run.py
+
+6. Navigate to your browser of choice and paste **localhost:5000** into the address bar
 
 You should see the login page for "The Business Machine --- Created my Team Corporate Sellout"
