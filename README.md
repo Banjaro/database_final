@@ -17,7 +17,7 @@ Before attempting to run the program please follow the steps below:
 
 3. Go to the filepath of this project and install prerequisites (bash: "chmod u+x LinuxInstall.sh" - Powershell: "./WindowsInstall.ps1")
 
-4. Initialize database
+4. Initialize database by running "startup.sql" in mysql.
 
 5. Go to the filepath of this project and type ./run.py
 
