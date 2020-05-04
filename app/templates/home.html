@@ -4,6 +4,22 @@
 	{% if current_user.is_authenticated %}
 	<h1>Hi, {{current_user.name}}!</h1>
 	<hr>
+	<h3>
+	<a href="{{url_for('employee',username=current_user.username)}}">Click </a>
+	to see your profile page</h3>
+	<h3>
+	<a href="{{url_for('deletee',username=current_user.username)}}">Click </a>
+	to delete your account
+	</h3>
+	{%else%}
+	<h1>Hello and welcome the The Business Machine </h1>
+	<hr>
+	<h3>Team Corporate Sellout's business based answer to your business based problems!</h3>
+	<h3><a href="{{url_for('login')}}">Login</a>
+	 to get started</h3>
 	{% endif %}
+	{% for company in companies %}
+		{% include '_company.html' %}
+	{% endfor %}
 
 {% endblock %}

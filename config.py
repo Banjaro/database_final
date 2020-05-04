@@ -6,7 +6,7 @@ class Config(object):
     # Here is where you set your mysql username and password
     db_username = 'root'
     db_password = 'T3stP@ssword1'
-    db_name = 'eatasses'
+    db_name = 'asseaters'
     SQLALCHEMY_DATABASE_URI = \
         'mysql+pymysql://{}:{}@localhost/{}'.format(
             db_username, db_password, db_name)

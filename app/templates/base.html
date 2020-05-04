@@ -12,15 +12,15 @@
 			</div>
 			<div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
 				<ul class="nav navbar-nav">
-						<li><a href="{{ url_for('home') }}">My Home</a></li>
-						<li>Fill me up with general links</li>
+						<li><a href="{{ url_for('home') }}">Home</a></li>
+						<li><a href="{{ url_for('company_explore') }}">Explore Companies</a></li>
 				</ul>
 				<ul class="nav navbar-nav navbar-right">
 						{% if current_user.is_anonymous %}
 						<li><a href="{{ url_for('login') }}">Login</a></li>
 						{% else %}
 			      <li><a href="{{ url_for('employee', username=current_user.username) }}">
-						Employee Profile
+						My Profile
 						</a></li>
 						<li><a href="{{ url_for('logout') }}">Logout</a></li>
 						{% endif %}
@@ -30,8 +30,10 @@
 	</nav>
 {%endblock%}
 
-
 {% block content %}
+' <style type="text/css">
+' 	body {background:#fff1c9},
+' </style>
     <div class="container">
         {% with messages = get_flashed_messages() %}
         {% if messages %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+
+{% block app_content %}
+{% if companies %}
+{% for company in companies %}
+<h1><a href="{{url_for('company',company=company.company_name)}}">
+{{company.company_name}}
+</a></h1>
+<h3>{{company.description}}</h3>
+<hr>
+{% endfor%}
+{% else %}
+<h1> Looks like there is nothing here! <h1>
+<hr>
+<h3><a href="{{url_for('add_company')}}">Click </a>
+to add a new company</h3>
+
+{% endif%}
+{% endblock %}

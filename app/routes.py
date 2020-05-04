@@ -1,15 +1,15 @@
 from app import app, db
 from app.forms import EmployeeLoginForm,\
-     EmployeeRegistrationForm, EditEmployeeForm
-# PostForm
+    EmployeeRegistrationForm, EditEmployeeForm, AddHourForm,\
+    ProductForm, CompanyForm
 from app.models import Company, Employee, Product
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
 from werkzeug.urls import url_parse
 
 
-@app.route('/', methods=['GET', 'POST'])
-@app.route('/home', methods=['GET', 'POST'])
+@app.route('/')
+@app.route('/home')
 def home():
     return render_template('home.html', title="Home")
 
@@ -38,6 +38,37 @@ def logout():
     return redirect(url_for('home'))
 
 
+@app.route('/addproduct', methods=['GET', 'POST'])
+def add_product():
+    form = ProductForm()
+    if form.validate_on_submit():
+        product = Product(
+            name=form.name.data,
+            description=form.description.data,
+            manf_id=form.company.data
+        )
+        db.session.add(product)
+        db.session.commit()
+        flash('Successfully added product')
+        return redirect(url_for('home'))
+    return render_template('add_product.html', form=form)
+
+
+@app.route('/addcompany', methods=['GET', 'POST'])
+def add_company():
+    form = CompanyForm()
+    if form.validate_on_submit():
+        company = Company(
+            company_name=form.company_name.data,
+            description=form.description.data
+        )
+        db.session.add(company)
+        db.session.commit()
+        flash('Successfully added company')
+        return redirect(url_for('home'))
+    return render_template('add_company.html', form=form)
+
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if current_user.is_authenticated:
@@ -62,11 +93,15 @@ def not_found_error(error):
     return render_template('404.html'), 404
 
 
-@app.route('/employee/<username>')
+@app.route('/employee/<username>', methods=['GET', 'POST'])
 @login_required
 def employee(username):
+    form = AddHourForm()
     user = Employee.query.filter_by(username=username).first_or_404()
-    return render_template('employee.html', user=user)
+    if form.validate_on_submit():
+        current_user.add_hours(form.hours.data)
+        return redirect(url_for('employee', username=username))
+    return render_template('employee.html', user=user, form=form)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
@@ -78,10 +113,47 @@ def edit_profile():
         current_user.set_password(form.password.data)
         db.session.commit()
         flash('Changes Saved')
-        return redirect(url_for('edit_profile'))
+        return redirect(url_for('employee', username=current_user.username))
     elif request.method == 'GET':
         form.username.data = current_user.username
     return render_template('edit_profile.html', form=form)
+
+
+@app.route('/company/<company>')
+def company(company):
+    current_company = Company.query.filter_by(company_name=company).first()
+    return render_template(
+        'company.html', company=current_company)
+
+
+@app.route('/company_explore')
+def company_explore():
+    companies = Company.query.all()
+    return render_template('company_explore.html', companies=companies)
+
+
+@app.route('/delete/<username>', methods=['GET', 'POST'])
+def deletee(username):
+    employee = Employee.query.filter_by(username=username).first()
+    if employee is None:
+        flash('Employee {} not found.'.format(username))
+        return redirect(url_for('home'))
+    db.session.delete(employee)
+    db.session.commit()
+    logout_user()
+    return redirect(url_for('home'))
+
+
+@app.route('/delete/<company_name>', methods=['GET', 'POST'])
+def deletec(company_name):
+    company = Company.query.filter_by(company_name=company_name).first()
+    if company is None:
+        flash('Company {} not found.'.format(company_name))
+        return redirect(url_for('home'))
+    db.session.delete(company)
+    db.session.commit()
+    logout_user()
+    return redirect(url_for('home'))
 
 
 # @app.route('/follow/<username>')
@@ -113,9 +185,3 @@ def edit_profile():
 #     db.session.commit()
 #     flash('You are no longer following {}'.format(username))
 #     return redirect(url_for('user', username=username))
-
-
-# @app.route('/explore')
-# def explore():
-#     posts = Post.query.order_by(Post.timestamp.desc()).all()
-#     return render_template('home.html', title='Explore', posts=posts)

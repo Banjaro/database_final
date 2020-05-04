@@ -1,14 +1,26 @@
 {% extends "base.html" %}
+{% import 'bootstrap/wtf.html' as wtf %}
+
 
 {% block app_content %}
-    <h1>Employee Profile: <b style="color:#A9A9A9">{{ user.name }}</b></h1>
+    <h1>Employee: <b style="color:#353C51">{{ user.name }}</b></h1>
     {% if user == current_user %}
     <p><a href="{{url_for('edit_profile')}}">Edit Profile</a></p>
     {%endif%}
     <hr>
-    <p>{{current_user.project_list}}</p>
-    {% for project in current_user.project_list %}
-        <p>asdf</p>
-        {% include "_posts.html" %}
+    <h3>Employer: <b>{{current_user.employer.company_name}}<b></h3>
+
+    <hr>
+    <h3>Your Products:</h3>
+    {% for product in current_user.all_products() %}
+        {% include "_products.html" %}
     {% endfor %}
+    <hr>
+    <h3>Your Total Hours</h3>
+    <h4>{{current_user.current_hours}}</h4>
+	<div class="row">
+		<div class="col-md-4">
+			{{wtf.quick_form(form)}}
+		</div>
+	</div>
 {% endblock %}
