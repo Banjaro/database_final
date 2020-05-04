@@ -18,7 +18,7 @@ CREATE TABLE employee
     job_title VARCHAR(64),
     hourly_wage INT NOT NULL,
     employer_id INT,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id, employer_id)
 );
 
 CREATE TABLE product
@@ -27,7 +27,7 @@ CREATE TABLE product
     name VARCHAR(40) NOT NULL,
     description VARCHAR(300),
     manf_id INT NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id, manf_id)
 );
 
 CREATE TABLE works_on
@@ -38,13 +38,16 @@ CREATE TABLE works_on
 );
 
 
--- ALTER TABLE employee
--- ADD FOREIGN KEY (employer_id)
--- REFERENCES company(id);
+ALTER TABLE employee
+ADD FOREIGN KEY (employer_id)
+REFERENCES company(id);
 
--- ALTER TABLE product
--- ADD FOREIGN KEY (manf_id)
--- REFERENCES company(id);
+
+
+
+ALTER TABLE product
+ADD FOREIGN KEY (manf_id)
+REFERENCES company(id);
 
 ALTER TABLE works_on
 ADD FOREIGN KEY (product_id)
@@ -59,7 +62,10 @@ INSERT INTO company(company_name,description) VALUES("Missouri S&T", "Founded in
 INSERT INTO company(company_name,description) VALUES("Mc. Donalds", "Burgers, burgers, burgers.");
 
 
-
+-- DROP TABLE works_on;
+-- DROP TABLE product;
+-- DROP TABLE employee;
+-- DROP TABLE company;
 
 
 
