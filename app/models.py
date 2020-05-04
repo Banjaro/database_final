@@ -62,9 +62,19 @@ class Employee(UserMixin, db.Model):
         self.current_hours = self.current_hours + hours
         db.session.commit()
 
-    def reset_hours(self):
-        self.current_hours = 0
-        db.session.commit()
+    def add_product(self, product):
+        if not self.is_working_on(product):
+            self.product_list.append(product)
+            db.session.commit()
+
+    def remove_product(self, product):
+        if self.is_working_on(product):
+            self.product_list.remove(product)
+            db.session.commit()
+
+    def is_working_on(self, product):
+        return self.product_list.filter(
+            works_on.c.employee_id == self.id).count() > 0
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)

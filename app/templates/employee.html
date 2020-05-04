@@ -11,7 +11,7 @@
     <h3>Employer: <b>{{current_user.employer.company_name}}<b></h3>
 
     <hr>
-    <h3>Your Products:</h3>
+    <h3>You are working on:</h3>
     {% for product in current_user.all_products() %}
         {% include "_products.html" %}
     {% endfor %}
