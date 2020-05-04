@@ -9,5 +9,5 @@
     {% for product in company.products %}
         {% include "_products.html" %}
     {% endfor %}
-
+<h3><a href="{{url_for('add_product')}}">New Product</a></h3>
 {% endblock %}

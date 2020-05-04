@@ -59,7 +59,7 @@ def add_company():
     form = CompanyForm()
     if form.validate_on_submit():
         company = Company(
-            company_name=form.company_name.data,
+            company_name=form.name.data,
             description=form.description.data
         )
         db.session.add(company)
@@ -78,6 +78,8 @@ def register():
         employee = Employee(
             username=form.username.data,
             name=form.name.data,
+            job_title=form.job_type.data,
+            hourly_wage=form.hourly.data,
             employer_id=form.company.data
             )
         employee.set_password(form.password.data)

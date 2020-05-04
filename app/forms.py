@@ -2,7 +2,7 @@ from app.models import Employee, Company
 from flask_wtf import FlaskForm
 from wtforms import StringField, \
     PasswordField, BooleanField, SubmitField, TextAreaField,\
-    IntegerField
+    IntegerField, SelectField
 from wtforms.validators import DataRequired,\
      EqualTo, Email, ValidationError, Length
 
@@ -13,12 +13,24 @@ class EmployeeLoginForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 
+jobtypes = [
+    ('internal', 'Internal Affairs'),
+    ('external', 'External Affairs'),
+    ('dev', 'Development')
+]
+
+
 class EmployeeRegistrationForm(FlaskForm):
     name = StringField('Your Name', validators=[DataRequired()])
     username = StringField('Username', validators=[DataRequired()])
     company = StringField(
-        'Employer Company ID',
+        'Employer ID',
         validators=[DataRequired()])
+    job_type = SelectField(
+        'Job Type', choices=jobtypes,
+        validators=[DataRequired()])
+    hourly = IntegerField('Hourly Wage', validators=[DataRequired()])
+
     password = PasswordField('Password', validators=[DataRequired()])
     passwordcheck = PasswordField(
         'Repeat Password', validators=[DataRequired(), EqualTo('password')])
@@ -36,7 +48,7 @@ class EmployeeRegistrationForm(FlaskForm):
 
 
 class CompanyForm(FlaskForm):
-    company_name = StringField('Name', validators=[DataRequired()])
+    name = StringField('Name', validators=[DataRequired()])
     description = StringField('Description', validators=[DataRequired()])
     submit = SubmitField('Create New Company')
 
