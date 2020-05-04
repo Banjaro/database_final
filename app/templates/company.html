@@ -9,5 +9,11 @@
     {% for product in company.products %}
         {% include "_products.html" %}
     {% endfor %}
-<h3><a href="{{url_for('add_product')}}">New Product</a></h3>
+<h3><a href="{{url_for('add_product',company=company.company_name)}}">New Product</a></h3>
+<hr>
+<h3>Our Employees</h3>
+    {% for employee in company.employees %}
+			<h4>{{employee.name}}</h4>
+    {% endfor %}
+
 {% endblock %}

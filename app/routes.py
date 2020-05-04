@@ -1,7 +1,7 @@
 from app import app, db
 from app.forms import EmployeeLoginForm,\
     EmployeeRegistrationForm, EditEmployeeForm, AddHourForm,\
-    ProductForm, CompanyForm, ProductEmpAddForm
+    ProductForm, CompanyForm, ProductEmpForm
 from app.models import Company, Employee, Product
 from flask import render_template, flash, redirect, url_for, request
 from flask_login import current_user, login_user, logout_user, login_required
@@ -38,8 +38,9 @@ def logout():
     return redirect(url_for('home'))
 
 
-@app.route('/addproduct', methods=['GET', 'POST'])
-def add_product():
+@app.route('/addproduct/<company>', methods=['GET', 'POST'])
+def add_product(company):
+    compname = Company.query.filter_by(company_name=company).first()
     form = ProductForm()
     if form.validate_on_submit():
         product = Product(
@@ -51,6 +52,8 @@ def add_product():
         db.session.commit()
         flash('Successfully added product')
         return redirect(url_for('home'))
+    if request.method == 'GET':
+        form.company.data = compname.id
     return render_template('add_product.html', form=form)
 
 
@@ -109,9 +112,8 @@ def employee(username):
 @app.route('/add_product_to/<username>', methods=['GET', 'POST'])
 @login_required
 def add_product_to(username):
-    form = ProductEmpAddForm()
+    form = ProductEmpForm()
     if form.validate_on_submit():
-        print("asdfasdfasdfasdfasdfasdfasdfasdfasdfasdf")
         product = Product.query.filter_by(name=form.name.data).first()
         current_user.add_product(product)
         flash("You are working on a new product")
@@ -119,17 +121,16 @@ def add_product_to(username):
     return render_template('add_product_employee.html', form=form)
 
 
-@app.route('/remove_product_to/<name>', methods=['GET','POST'])
+@app.route('/remove_product_to/<username>', methods=['GET', 'POST'])
 @login_required
-def remove_product(name):
-    product = Product.query.filter_by(name=name).first()
-    if product is None:
-        flash('Product {} not found.'.format(product))
-        return redirect(url_for('index'))
-    current_user.remove_product(product)
-    db.session.commit()
-    flash('You are no longer working on {}'.format(product))
-    return redirect(url_for('employee', username=current_user.username))
+def remove_product_to(username):
+    form = ProductEmpForm()
+    if form.validate_on_submit():
+        product = Product.query.filter_by(name=form.name.data).first()
+        current_user.remove_product(product)
+        flash("You are no longer working on that product")
+        redirect(url_for('employee', username=username))
+    return render_template('add_product_employee.html', form=form)
 
 
 @app.route('/edit_profile', methods=['GET', 'POST'])
@@ -160,7 +161,7 @@ def company_explore():
     return render_template('company_explore.html', companies=companies)
 
 
-@app.route('/delete/<username>', methods=['GET', 'POST'])
+@app.route('/deletee/<username>', methods=['GET', 'POST'])
 def deletee(username):
     employee = Employee.query.filter_by(username=username).first()
     if employee is None:
@@ -172,7 +173,7 @@ def deletee(username):
     return redirect(url_for('home'))
 
 
-@app.route('/delete/<company_name>', methods=['GET', 'POST'])
+@app.route('/deletec/<company_name>', methods=['GET', 'POST'])
 def deletec(company_name):
     company = Company.query.filter_by(company_name=company_name).first()
     if company is None:
@@ -180,11 +181,10 @@ def deletec(company_name):
         return redirect(url_for('home'))
     db.session.delete(company)
     db.session.commit()
-    logout_user()
     return redirect(url_for('home'))
 
 
-@app.route('/delete/<product_name>', methods=['GET', 'POST'])
+@app.route('/deletep/<product_name>', methods=['GET', 'POST'])
 def deletep(product_name):
     company = Product.query.filter_by(name=product_name).first()
     if company is None:
@@ -192,5 +192,4 @@ def deletep(product_name):
         return redirect(url_for('home'))
     db.session.delete(company)
     db.session.commit()
-    logout_user()
     return redirect(url_for('home'))

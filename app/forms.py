@@ -54,10 +54,8 @@ for item in query:
     thing = (item.name, item.name)
     choices.append(thing)
 
-print(choices)
 
-
-class ProductEmpAddForm(FlaskForm):
+class ProductEmpForm(FlaskForm):
     name = SelectField("Product", choices=choices)
     submit = SubmitField('Add Product')
 
